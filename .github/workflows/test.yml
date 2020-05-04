@@ -14,7 +14,6 @@ jobs:
   main:
     name: Tests
     runs-on: ubuntu-latest
-    if: "!startsWith(github.ref, 'l10n_')"
     steps:
       - run: printenv | grep -v "GITHUB_TOKEN"
       - uses: actions/checkout@v2.0.0
@@ -22,5 +21,7 @@ jobs:
           fetch-depth: 1
           ref: ${{ github.event.pull_request.head.ref || github.ref }}
       - run: ./.github/upload_coverage.sh "patatas!" $GITHUB_EVENT_PATH
+        if: "!startsWith(github.ref, 'refs/heads/l10n_')"
       - run: cat $GITHUB_EVENT_PATH
+        if: "!startsWith(github.ref, 'l10n_')"
       - run: foobar
